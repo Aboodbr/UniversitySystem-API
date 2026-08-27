@@ -1,0 +1,9 @@
+/app/4. University.Api/obj/Debug/net10.0/University.Api.csproj.AssemblyReference.cache
+/app/4. University.Api/obj/Debug/net10.0/rpswa.dswa.cache.json
+/app/4. University.Api/obj/Debug/net10.0/University.Api.GeneratedMSBuildEditorConfig.editorconfig
+/app/4. University.Api/obj/Debug/net10.0/University.Api.AssemblyInfoInputs.cache
+/app/4. University.Api/obj/Debug/net10.0/University.Api.AssemblyInfo.cs
+/app/4. University.Api/obj/Debug/net10.0/University.Api.csproj.CoreCompileInputs.cache
+/app/4. University.Api/obj/Debug/net10.0/University.Api.MvcApplicationPartsAssemblyInfo.cs
+/app/4. University.Api/obj/Debug/net10.0/University.Api.MvcApplicationPartsAssemblyInfo.cache
+/app/4. University.Api/obj/Debug/net10.0/University.Api.sourcelink.json

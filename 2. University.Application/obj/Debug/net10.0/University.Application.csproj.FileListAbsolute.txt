@@ -1,0 +1,16 @@
+/app/2. University.Application/bin/Debug/net10.0/University.Application.deps.json
+/app/2. University.Application/bin/Debug/net10.0/University.Application.dll
+/app/2. University.Application/bin/Debug/net10.0/University.Application.pdb
+/app/2. University.Application/bin/Debug/net10.0/University.Domain.dll
+/app/2. University.Application/bin/Debug/net10.0/University.Domain.pdb
+/app/2. University.Application/obj/Debug/net10.0/University.Application.csproj.AssemblyReference.cache
+/app/2. University.Application/obj/Debug/net10.0/University.Application.GeneratedMSBuildEditorConfig.editorconfig
+/app/2. University.Application/obj/Debug/net10.0/University.Application.AssemblyInfoInputs.cache
+/app/2. University.Application/obj/Debug/net10.0/University.Application.AssemblyInfo.cs
+/app/2. University.Application/obj/Debug/net10.0/University.Application.csproj.CoreCompileInputs.cache
+/app/2. University.Application/obj/Debug/net10.0/University.Application.sourcelink.json
+/app/2. University.Application/obj/Debug/net10.0/Universi.05740EDD.Up2Date
+/app/2. University.Application/obj/Debug/net10.0/University.Application.dll
+/app/2. University.Application/obj/Debug/net10.0/refint/University.Application.dll
+/app/2. University.Application/obj/Debug/net10.0/University.Application.pdb
+/app/2. University.Application/obj/Debug/net10.0/ref/University.Application.dll

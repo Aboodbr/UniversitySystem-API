@@ -1,0 +1,12 @@
+/app/1. University.Domain/bin/Debug/net10.0/University.Domain.deps.json
+/app/1. University.Domain/bin/Debug/net10.0/University.Domain.dll
+/app/1. University.Domain/bin/Debug/net10.0/University.Domain.pdb
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.AssemblyInfoInputs.cache
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.AssemblyInfo.cs
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.csproj.CoreCompileInputs.cache
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.sourcelink.json
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.dll
+/app/1. University.Domain/obj/Debug/net10.0/refint/University.Domain.dll
+/app/1. University.Domain/obj/Debug/net10.0/University.Domain.pdb
+/app/1. University.Domain/obj/Debug/net10.0/ref/University.Domain.dll

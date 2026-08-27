@@ -1,0 +1,58 @@
+  Determining projects to restore...
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27 [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9 [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7 [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52 [/app/UniversitySystem.slnx]
+  All projects are up-to-date for restore.
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52
+  University.Domain -> /app/1. University.Domain/bin/Debug/net10.0/University.Domain.dll
+  University.Application -> /app/2. University.Application/bin/Debug/net10.0/University.Application.dll
+  University.Infrastructure -> /app/3. University.Infrastructure/bin/Debug/net10.0/University.Infrastructure.dll
+/app/4. University.Api/Swagger/SwaggerConfiguration.cs(2,25): error CS0234: The type or namespace name 'Models' does not exist in the namespace 'Microsoft.OpenApi' (are you missing an assembly reference?) [/app/4. University.Api/University.Api.csproj]
+
+Build FAILED.
+
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27 [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9 [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7 [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj [/app/UniversitySystem.slnx]
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52 [/app/UniversitySystem.slnx]
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1903: Package 'Microsoft.Extensions.Caching.Memory' 8.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-qj66-m88j-hmgj
+/app/3. University.Infrastructure/University.Infrastructure.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Azure.Identity' 1.7.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-5mfx-4wcx-rv27
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'Azure.Identity' 1.7.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv
+/app/4. University.Api/University.Api.csproj : warning NU1903: Package 'Microsoft.Data.SqlClient' 5.1.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7
+/app/4. University.Api/University.Api.csproj : warning NU1902: Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52
+/app/4. University.Api/Swagger/SwaggerConfiguration.cs(2,25): error CS0234: The type or namespace name 'Models' does not exist in the namespace 'Microsoft.OpenApi' (are you missing an assembly reference?) [/app/4. University.Api/University.Api.csproj]
+    22 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:02.64

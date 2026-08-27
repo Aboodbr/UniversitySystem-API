@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/1. University.Domain/">
+    <Project Path="1. University.Domain/University.Domain.csproj" />
+  </Folder>
+  <Folder Name="/2. University.Application/">
+    <Project Path="2. University.Application/University.Application.csproj" />
+  </Folder>
+  <Folder Name="/3. University.Infrastructure/">
+    <Project Path="3. University.Infrastructure/University.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/4. University.Api/">
+    <Project Path="4. University.Api/University.Api.csproj" />
+  </Folder>
+</Solution>
