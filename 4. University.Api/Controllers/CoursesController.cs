@@ -45,4 +45,12 @@ public class CoursesController : BaseApiController
 
         return Ok(response);
     }
+
+    [HttpGet("{id}/offerings")]
+    public async Task<ActionResult<ApiResponse<IReadOnlyList<University.Application.DTOs.Offerings.CourseOfferingDto>>>> GetCourseOfferings(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var response = await _courseService.GetCourseOfferingsAsync(id, pageNumber, pageSize);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
 }

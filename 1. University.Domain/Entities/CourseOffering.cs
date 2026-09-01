@@ -7,6 +7,8 @@ public class CourseOffering
     public int Id { get; set; }
     public int MaxCapacity { get; set; }
 
+    public bool IsDeleted { get; set; } = false;
+
     public int CourseId { get; set; } //fk
     public Course Course { get; set; } // NAV PROP
 

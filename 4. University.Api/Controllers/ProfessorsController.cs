@@ -12,11 +12,13 @@ namespace University.Api.Controllers;
 public class ProfessorsController : BaseApiController
 {
     private readonly IGradingService _gradingService;
+    private readonly IProfessorService _professorService;
 
     // Constructor for Dependency Injection
-    public ProfessorsController(IGradingService gradingService)
+    public ProfessorsController(IGradingService gradingService, IProfessorService professorService)
     {
         _gradingService = gradingService;
+        _professorService = professorService;
     }
 
     /// <summary>
@@ -37,5 +39,32 @@ public class ProfessorsController : BaseApiController
 
         // Return 200 OK if the grade is successfully recorded and GPA is updated
         return Ok(result);
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin,Student")]
+    public async Task<ActionResult<ApiResponse<System.Collections.Generic.IReadOnlyList<ProfessorResponseDto>>>> GetProfessors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var response = await _professorService.GetAllProfessorsAsync(pageNumber, pageSize);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
+
+    [HttpGet("{id}/schedule")]
+    [Authorize(Roles = "Professor,Admin")]
+    public async Task<ActionResult<ApiResponse<System.Collections.Generic.IReadOnlyList<University.Application.DTOs.Offerings.CourseOfferingDto>>>> GetProfessorSchedule(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var response = await _professorService.GetProfessorScheduleAsync(id, pageNumber, pageSize);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
+
+    [HttpGet("offerings/{offeringId}/students")]
+    [Authorize(Roles = "Professor")]
+    public async Task<ActionResult<ApiResponse<System.Collections.Generic.IReadOnlyList<University.Application.DTOs.Students.StudentResponseDto>>>> GetOfferingStudents(int offeringId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var response = await _professorService.GetOfferingStudentsAsync(offeringId, pageNumber, pageSize);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
     }
 }

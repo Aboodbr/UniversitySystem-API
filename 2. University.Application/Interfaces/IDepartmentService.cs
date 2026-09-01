@@ -7,8 +7,8 @@ namespace University.Application.Interfaces;
 
 public interface IDepartmentService
 {
-    Task<ApiResponse<IReadOnlyList<DepartmentDto>>> GetAllDepartmentsAsync();
-    Task<ApiResponse<DepartmentDto>> GetDepartmentByIdAsync(int id);
+    Task<ApiResponse<IReadOnlyList<DepartmentDto>>> GetAllDepartmentsAsync(int pageNumber, int pageSize);
+    Task<ApiResponse<DepartmentDetailsDto>> GetDepartmentByIdAsync(int id);
     Task<ApiResponse<DepartmentDto>> CreateDepartmentAsync(CreateDepartmentDto dto);
     Task<ApiResponse<DepartmentDto>> UpdateDepartmentAsync(UpdateDepartmentDto dto);
     Task<ApiResponse<bool>> DeleteDepartmentAsync(int id);

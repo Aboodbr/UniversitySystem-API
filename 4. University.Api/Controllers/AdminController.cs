@@ -15,12 +15,14 @@ public class AdminController : BaseApiController
 {
     private readonly ISemesterService _semesterService;
     private readonly ICourseService _courseService;
+    private readonly IDepartmentService _departmentService;
 
     // Constructor for Dependency Injection
-    public AdminController(ISemesterService semesterService, ICourseService courseService)
+    public AdminController(ISemesterService semesterService, ICourseService courseService, IDepartmentService departmentService)
     {
         _semesterService = semesterService;
         _courseService = courseService;
+        _departmentService = departmentService;
     }
 
     /// <summary>
@@ -66,5 +68,54 @@ public class AdminController : BaseApiController
             return BadRequest(response);
 
         return CreatedAtAction(nameof(CreateCourseOffering), new { id = response.Data?.Id }, response);
+    }
+
+    [HttpPost("departments")]
+    public async Task<ActionResult<ApiResponse<University.Application.DTOs.Departments.DepartmentDto>>> CreateDepartment([FromBody] University.Application.DTOs.Departments.CreateDepartmentDto dto)
+    {
+        var response = await _departmentService.CreateDepartmentAsync(dto);
+        if (!response.Success) return BadRequest(response);
+        return CreatedAtAction("GetDepartment", "Departments", new { id = response.Data?.Id }, response);
+    }
+
+    [HttpPut("departments/{id}")]
+    public async Task<ActionResult<ApiResponse<University.Application.DTOs.Departments.DepartmentDto>>> UpdateDepartment(int id, [FromBody] University.Application.DTOs.Departments.UpdateDepartmentDto dto)
+    {
+        if (id != dto.Id) return BadRequest(new ApiResponse<University.Application.DTOs.Departments.DepartmentDto>("ID mismatch"));
+        var response = await _departmentService.UpdateDepartmentAsync(dto);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
+
+    [HttpDelete("departments/{id}")]
+    public async Task<ActionResult<ApiResponse<bool>>> DeleteDepartment(int id)
+    {
+        var response = await _departmentService.DeleteDepartmentAsync(id);
+        if (!response.Success) return NotFound(response);
+        return Ok(response);
+    }
+
+    [HttpPut("courses/{id}")]
+    public async Task<ActionResult<ApiResponse<CourseResponseDto>>> UpdateCourse(int id, [FromBody] UpdateCourseDto dto)
+    {
+        var response = await _courseService.UpdateCourseAsync(id, dto);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
+
+    [HttpDelete("courses/{id}")]
+    public async Task<ActionResult<ApiResponse<bool>>> DeleteCourse(int id)
+    {
+        var response = await _courseService.DeleteCourseAsync(id);
+        if (!response.Success) return NotFound(response);
+        return Ok(response);
+    }
+
+    [HttpPut("offerings/{id}")]
+    public async Task<ActionResult<ApiResponse<CourseOfferingDto>>> UpdateCourseOffering(int id, [FromBody] UpdateCourseOfferingDto dto)
+    {
+        var response = await _courseService.UpdateCourseOfferingAsync(id, dto);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
     }
 }

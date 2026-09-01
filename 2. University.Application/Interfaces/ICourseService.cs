@@ -15,4 +15,8 @@ public interface ICourseService
     // Commands (Write Operations - Used by AdminController)
     Task<ApiResponse<CourseResponseDto>> CreateCourseAsync(CreateCourseDto createCourseDto);
     Task<ApiResponse<CourseOfferingDto>> CreateCourseOfferingAsync(CreateCourseOfferingDto createOfferingDto);
+    Task<ApiResponse<CourseResponseDto>> UpdateCourseAsync(int id, UpdateCourseDto dto);
+    Task<ApiResponse<bool>> DeleteCourseAsync(int id);
+    Task<ApiResponse<IReadOnlyList<CourseOfferingDto>>> GetCourseOfferingsAsync(int courseId, int pageNumber, int pageSize);
+    Task<ApiResponse<CourseOfferingDto>> UpdateCourseOfferingAsync(int id, UpdateCourseOfferingDto dto);
 }

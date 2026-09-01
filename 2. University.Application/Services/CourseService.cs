@@ -73,4 +73,59 @@ public class CourseService : ICourseService
         var data = _mapper.Map<CourseOfferingDto>(offeringEntity);
         return new ApiResponse<CourseOfferingDto>(data, "Course offering created successfully.");
     }
+
+    public async Task<ApiResponse<CourseResponseDto>> UpdateCourseAsync(int id, UpdateCourseDto dto)
+    {
+        var course = await _unitOfWork.Courses.GetByIdAsync(id);
+        if (course == null)
+            return new ApiResponse<CourseResponseDto>("Course not found.");
+
+        course.Title = dto.Title;
+        course.Credits = dto.Credits;
+        course.Description = dto.Description;
+
+        _unitOfWork.Courses.Update(course);
+        await _unitOfWork.CompleteAsync();
+
+        var updatedCourse = await _unitOfWork.Courses.GetByIdAsync(course.Id);
+        var mappedCourse = _mapper.Map<CourseResponseDto>(updatedCourse);
+        return new ApiResponse<CourseResponseDto>(mappedCourse, "Course updated successfully.");
+    }
+
+    public async Task<ApiResponse<bool>> DeleteCourseAsync(int id)
+    {
+        var course = await _unitOfWork.Courses.GetByIdAsync(id);
+        if (course == null)
+            return new ApiResponse<bool>("Course not found.");
+
+        course.IsDeleted = true;
+        _unitOfWork.Courses.Update(course);
+        await _unitOfWork.CompleteAsync();
+
+        return new ApiResponse<bool>(true, "Course deleted successfully.");
+    }
+
+    public async Task<ApiResponse<IReadOnlyList<CourseOfferingDto>>> GetCourseOfferingsAsync(int courseId, int pageNumber, int pageSize)
+    {
+        var offerings = await _unitOfWork.CourseOfferings.GetPagedAsync(o => o.CourseId == courseId, pageNumber, pageSize, o => o.Course, o => o.Semester, o => o.Professor, o => o.Room);
+        var mappedOfferings = _mapper.Map<IReadOnlyList<CourseOfferingDto>>(offerings);
+        return new ApiResponse<IReadOnlyList<CourseOfferingDto>>(mappedOfferings);
+    }
+
+    public async Task<ApiResponse<CourseOfferingDto>> UpdateCourseOfferingAsync(int id, UpdateCourseOfferingDto dto)
+    {
+        var offering = await _unitOfWork.CourseOfferings.GetByIdAsync(id);
+        if (offering == null)
+            return new ApiResponse<CourseOfferingDto>("Offering not found.");
+
+        if (dto.ProfessorId.HasValue) offering.ProfessorId = dto.ProfessorId;
+        if (dto.RoomId.HasValue) offering.RoomId = dto.RoomId;
+
+        _unitOfWork.CourseOfferings.Update(offering);
+        await _unitOfWork.CompleteAsync();
+
+        var updatedOffering = await _unitOfWork.CourseOfferings.GetFirstOrDefaultAsync(o => o.Id == offering.Id, o => o.Course, o => o.Semester, o => o.Professor, o => o.Room);
+        var mappedOffering = _mapper.Map<CourseOfferingDto>(updatedOffering);
+        return new ApiResponse<CourseOfferingDto>(mappedOffering, "Offering updated successfully.");
+    }
 }

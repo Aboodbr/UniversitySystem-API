@@ -6,6 +6,7 @@ namespace University.Application.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
+    IDepartmentRepository Departments { get; }
     IStudentRepository Students { get; }
     IProfessorRepository Professors { get; }
     ICourseRepository Courses { get; }

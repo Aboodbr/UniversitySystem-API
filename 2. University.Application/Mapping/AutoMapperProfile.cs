@@ -41,6 +41,7 @@ public class AutoMapperProfile : Profile
 
         // Department Mapping
         CreateMap<Department, DepartmentDto>();
+        CreateMap<Department, DepartmentDetailsDto>();
 
         // Enrollment Mapping
         CreateMap<Enrollment, EnrollmentResponseDto>()
