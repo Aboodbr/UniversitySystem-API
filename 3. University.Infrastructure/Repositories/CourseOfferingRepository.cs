@@ -17,6 +17,7 @@ public class CourseOfferingRepository : GenericRepository<CourseOffering>, ICour
     public async Task<IReadOnlyList<CourseOffering>> GetActiveOfferingsBySemesterAsync(int semesterId)
     {
         return await _context.CourseOfferings
+            .AsNoTracking() // Add to improve performance 
             .Include(co => co.Course)
             .Include(co => co.Professor)
             .Include(co => co.Room)

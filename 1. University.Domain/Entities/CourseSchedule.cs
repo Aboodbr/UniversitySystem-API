@@ -9,6 +9,6 @@ public class CourseSchedule
     public TimeSpan StartTime { get; set; }
     public TimeSpan EndTime { get; set; }
 
-    public int CourseOfferingId { get; set; }
-    public CourseOffering CourseOffering { get; set; }
+    public int CourseOfferingId { get; set; } // fk
+    public CourseOffering CourseOffering { get; set; } // nav prop
 }

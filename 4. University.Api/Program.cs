@@ -1,41 +1,91 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using University.Api.Swagger;
+using University.Api.Extensions;
+using University.Api.Middlewares;
+using University.Infrastructure.Data;
+using University.Infrastructure.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// ==========================================
+// 1. Configure Services (Dependency Injection)
+// ==========================================
 
+// Controllers & API Explorer
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+// CORS Policy (Allowing Frontend applications to call the API)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowAnyOrigin(); // Can be restricted to specific domains in Production
+    });
+});
+
+// Custom Application Services (Database, Identity, JWT, Repos, Application Services)
+builder.Services.AddApplicationServices(builder.Configuration);
+
+// Swagger Configuration with JWT support
+builder.Services.AddSwaggerDocumentation();
+
+// ==========================================
+// 2. Build the Application Pipeline
+// ==========================================
 var app = builder.Build();
+// ==========================================
+// Seed Database on Startup
+// ==========================================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<UniversityDbContext>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-// Configure the HTTP request pipeline.
+        // Call the initializer
+        await DbInitializer.InitializeAsync(context, userManager, roleManager);
+    }
+    catch (System.Exception ex)
+    {
+        // Log errors if seeding fails
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred during database initialization.");
+    }
+}
+
+// A. Global Exception Handler MUST be the very first middleware
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
+// B. Swagger in Development
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    // Enable Swagger UI and set it to load at the root URL (localhost:5186/)
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "University API v1"));
 }
 
+// C. Security & Routing Middlewares
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Use CORS before Authentication!
+app.UseCors("AllowAll");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// D. Identity & Security (Order is critical: AuthN then AuthZ)
+app.UseAuthentication(); // Verifies WHO you are (Validates JWT)
+app.UseAuthorization();  // Verifies WHAT you can do (Checks Roles like "Admin")
 
+// E. Map Endpoint Routing
+app.MapControllers();
+
+// ==========================================
+// 3. Run the Application
+// ==========================================
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

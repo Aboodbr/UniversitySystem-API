@@ -14,7 +14,15 @@ public class GlobalExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger<GlobalExceptionMiddleware> _logger;
 
-    public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+    // Micro-Optimization: Instantiate JsonSerializerOptions once to save memory allocation
+    private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
+    public GlobalExceptionMiddleware(
+        RequestDelegate next,
+        ILogger<GlobalExceptionMiddleware> logger)
     {
         _next = next;
         _logger = logger;
@@ -28,13 +36,23 @@ public class GlobalExceptionMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(
+                ex,
+                "An unhandled exception occurred while processing the request."
+            );
+
             await HandleExceptionAsync(context, ex);
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(
+        HttpContext context,
+        Exception exception)
     {
+        // Prevent modifying the response if it has already started being sent to the client
+        if (context.Response.HasStarted)
+            return;
+
         context.Response.ContentType = "application/json";
 
         var statusCode = exception switch
@@ -45,19 +63,23 @@ public class GlobalExceptionMiddleware
 
         context.Response.StatusCode = statusCode;
 
-        var response = new ApiResponse<string>(exception.Message)
+        var response = new ApiResponse<string>
         {
             Success = false
         };
 
-        // In a real app, don't expose stack trace in production for 500 errors
-        if (statusCode == (int)HttpStatusCode.InternalServerError)
+        if (exception is DomainException)
+        {
+            response.Message = exception.Message;
+        }
+        else
         {
             response.Message = "An internal server error occurred.";
-            response.Errors.Add(exception.Message); // Consider hiding in Prod
         }
 
-        var json = JsonSerializer.Serialize(response, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        // Using the static options field here for better performance
+        var json = JsonSerializer.Serialize(response, _jsonOptions);
+
         await context.Response.WriteAsync(json);
     }
 }

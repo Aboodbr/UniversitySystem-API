@@ -10,8 +10,8 @@ public class Professor
     public string LastName { get; set; }
     public string Title { get; set; }
 
-    public int DepartmentId { get; set; }
-    public Department Department { get; set; }
+    public int DepartmentId { get; set; } // FK
+    public Department Department { get; set; } // NAV PROP
 
     public ICollection<CourseOffering> CourseOfferings { get; set; } = new List<CourseOffering>();
 }

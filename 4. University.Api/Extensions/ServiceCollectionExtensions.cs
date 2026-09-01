@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,28 +19,29 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Database
+        // 1. Database
         services.AddDbContext<UniversityDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-        // Identity
+        // 2. Identity
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         {
+            options.Password.RequiredLength = 6;
             options.Password.RequireDigit = true;
-            options.Password.RequiredLength = 8;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = true;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = true;
             options.User.RequireUniqueEmail = true;
         })
         .AddEntityFrameworkStores<UniversityDbContext>()
         .AddDefaultTokenProviders();
 
-        // JWT Authentication
+        // 3. JWT Authentication
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
         .AddJwtBearer(options =>
         {
@@ -55,18 +57,21 @@ public static class ServiceCollectionExtensions
             };
         });
 
-        // Repositories & Unit of Work
+        // 4. Repositories & Unit of Work
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        // Services
+        // 5. Application Services
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IAuthService, AuthService>(); // Added for AuthController
         services.AddScoped<IRegistrationService, RegistrationService>();
         services.AddScoped<IGradingService, GradingService>();
         services.AddScoped<IGpaService, GpaService>();
+        services.AddScoped<ICourseService, CourseService>(); // Added for Admin & Courses Controllers
+        services.AddScoped<ISemesterService, SemesterService>(); // Added for Admin Controller
 
-        // AutoMapper
-        services.AddAutoMapper(typeof(University.Application.Mapping.AutoMapperProfile).Assembly);
+        // 6. AutoMapper
+        services.AddAutoMapper(cfg => cfg.AddProfile<University.Application.Mapping.AutoMapperProfile>());
 
         return services;
     }

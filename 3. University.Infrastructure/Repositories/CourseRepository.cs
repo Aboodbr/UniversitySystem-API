@@ -17,6 +17,7 @@ public class CourseRepository : GenericRepository<Course>, ICourseRepository
     public async Task<IReadOnlyList<Course>> GetCoursesByDepartmentAsync(int departmentId)
     {
         return await _context.Courses
+            .AsNoTracking()
             .Where(c => c.DepartmentId == departmentId)
             .ToListAsync();
     }

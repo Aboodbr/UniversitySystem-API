@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using University.Application.Interfaces.Repositories;
@@ -20,9 +21,17 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task<IReadOnlyList<T>> GetAllAsync()
+    public async Task<IReadOnlyList<T>> GetAllAsync(params Expression<System.Func<T, object>>[] includes)
     {
-        return await _context.Set<T>().ToListAsync();
+        IQueryable<T> query = _context.Set<T>().AsNoTracking();
+        if (includes != null)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+        return await query.ToListAsync();
     }
 
     public async Task AddAsync(T entity)

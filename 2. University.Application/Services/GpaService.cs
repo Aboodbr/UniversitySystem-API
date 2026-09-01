@@ -15,7 +15,7 @@ public class GpaService : IGpaService
     {
         _unitOfWork = unitOfWork;
     }
-
+    // GPA = SUM OF (CREDITS X GRADE POINT)/SUM OF CREDITS
     public async Task<ApiResponse<double>> CalculateGpaAsync(int studentId)
     {
         var enrollments = await _unitOfWork.Enrollments.GetStudentEnrollmentsAsync(studentId);

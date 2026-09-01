@@ -4,26 +4,45 @@ using System.Collections.Generic;
 using University.Application.DTOs;
 using University.Application.DTOs.Courses;
 using University.Application.Interfaces;
-using AutoMapper;
 
 namespace University.Api.Controllers;
 
 public class CoursesController : BaseApiController
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
+    private readonly ICourseService _courseService;
 
-    public CoursesController(IUnitOfWork unitOfWork, IMapper mapper)
+    // Dependency Injection for the Service layer only
+    public CoursesController(ICourseService courseService)
     {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        _courseService = courseService;
     }
 
+    /// <summary>
+    /// Retrieves a list of all available courses in the university catalog.
+    /// </summary>
     [HttpGet]
     public async Task<ActionResult<ApiResponse<IReadOnlyList<CourseResponseDto>>>> GetCourses()
     {
-        var courses = await _unitOfWork.Courses.GetAllAsync();
-        var data = _mapper.Map<IReadOnlyList<CourseResponseDto>>(courses);
-        return Ok(new ApiResponse<IReadOnlyList<CourseResponseDto>>(data));
+        var response = await _courseService.GetAllCoursesAsync();
+
+        if (!response.Success)
+            return BadRequest(response);
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Retrieves details of a specific course by its unique ID.
+    /// </summary>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ApiResponse<CourseResponseDto>>> GetCourse(int id)
+    {
+        var response = await _courseService.GetCourseByIdAsync(id);
+
+        // If the course is not found, return a 404 Not Found status
+        if (!response.Success)
+            return NotFound(response);
+
+        return Ok(response);
     }
 }

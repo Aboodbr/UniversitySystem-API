@@ -17,6 +17,7 @@ public class EnrollmentRepository : GenericRepository<Enrollment>, IEnrollmentRe
     public async Task<IReadOnlyList<Enrollment>> GetOfferingsEnrollmentsAsync(int courseOfferingId)
     {
         return await _context.Enrollments
+            .AsNoTracking()
             .Include(e => e.Student)
             .Where(e => e.CourseOfferingId == courseOfferingId)
             .ToListAsync();
@@ -25,6 +26,7 @@ public class EnrollmentRepository : GenericRepository<Enrollment>, IEnrollmentRe
     public async Task<IReadOnlyList<Enrollment>> GetStudentEnrollmentsAsync(int studentId)
     {
         return await _context.Enrollments
+            .AsNoTracking()
             .Include(e => e.CourseOffering)
                 .ThenInclude(co => co.Course)
             .Where(e => e.StudentId == studentId)

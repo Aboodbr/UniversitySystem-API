@@ -15,7 +15,7 @@ public class SemesterRepository : GenericRepository<Semester>, ISemesterReposito
 
     public async Task<Semester> GetActiveSemesterAsync()
     {
-        return await _context.Semesters
+        return await _context.Semesters.AsNoTracking()
             .FirstOrDefaultAsync(s => s.Status == SemesterStatus.Active);
     }
 }
