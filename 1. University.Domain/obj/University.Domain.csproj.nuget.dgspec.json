@@ -1,26 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/app/1. University.Domain/University.Domain.csproj": {}
+    "C:\\Users\\DELL\\source\\repos\\Aboodbr\\UniversitySystem-API\\1. University.Domain\\University.Domain.csproj": {}
   },
   "projects": {
-    "/app/1. University.Domain/University.Domain.csproj": {
+    "C:\\Users\\DELL\\source\\repos\\Aboodbr\\UniversitySystem-API\\1. University.Domain\\University.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/app/1. University.Domain/University.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\source\\repos\\Aboodbr\\UniversitySystem-API\\1. University.Domain\\University.Domain.csproj",
         "projectName": "University.Domain",
-        "projectPath": "/app/1. University.Domain/University.Domain.csproj",
-        "packagesPath": "/home/jules/.nuget/packages/",
-        "outputPath": "/app/1. University.Domain/obj/",
+        "projectPath": "C:\\Users\\DELL\\source\\repos\\Aboodbr\\UniversitySystem-API\\1. University.Domain\\University.Domain.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DELL\\source\\repos\\Aboodbr\\UniversitySystem-API\\1. University.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/jules/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/lib/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -33,13 +34,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "10.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -60,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
