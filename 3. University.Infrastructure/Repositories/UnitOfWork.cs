@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(UniversityDbContext context)
     {
         _context = context;
+        Departments = new DepartmentRepository(_context);
         Students = new StudentRepository(_context);
         Professors = new ProfessorRepository(_context);
         Courses = new CourseRepository(_context);
@@ -21,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
         Semesters = new SemesterRepository(_context);
     }
 
+    public IDepartmentRepository Departments { get; private set; }
     public IStudentRepository Students { get; private set; }
     public IProfessorRepository Professors { get; private set; }
     public ICourseRepository Courses { get; private set; }

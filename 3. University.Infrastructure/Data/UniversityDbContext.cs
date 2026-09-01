@@ -28,5 +28,10 @@ public class UniversityDbContext : IdentityDbContext<ApplicationUser>
 
         // Apply all configurations from the current assembly
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        // Soft Delete Query Filters
+        builder.Entity<Department>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<Course>().HasQueryFilter(e => !e.IsDeleted);
+        builder.Entity<CourseOffering>().HasQueryFilter(e => !e.IsDeleted);
     }
 }

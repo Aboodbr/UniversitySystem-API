@@ -59,6 +59,7 @@ public static class ServiceCollectionExtensions
 
         // 4. Repositories & Unit of Work
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // 5. Application Services
@@ -69,6 +70,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IGpaService, GpaService>();
         services.AddScoped<ICourseService, CourseService>(); // Added for Admin & Courses Controllers
         services.AddScoped<ISemesterService, SemesterService>(); // Added for Admin Controller
+        services.AddScoped<IDepartmentService, DepartmentService>();
+        services.AddScoped<IProfessorService, ProfessorService>();
+        services.AddScoped<IStudentService, StudentService>();
 
         // 6. AutoMapper
         services.AddAutoMapper(cfg => cfg.AddProfile<University.Application.Mapping.AutoMapperProfile>());

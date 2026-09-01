@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using University.Application.DTOs;
 using University.Application.DTOs.Students;
+using University.Application.Interfaces;
 using University.Application.Services;
 
 namespace University.Api.Controllers;
@@ -11,11 +12,13 @@ namespace University.Api.Controllers;
 public class StudentsController : BaseApiController
 {
     private readonly IRegistrationService _registrationService;
+    private readonly IStudentService _studentService;
 
     // Constructor for Dependency Injection
-    public StudentsController(IRegistrationService registrationService)
+    public StudentsController(IRegistrationService registrationService, IStudentService studentService)
     {
         _registrationService = registrationService;
+        _studentService = studentService;
     }
 
     /// <summary>
@@ -56,5 +59,32 @@ public class StudentsController : BaseApiController
 
         // Return 200 OK if successfully dropped
         return Ok(result);
+    }
+
+    [HttpGet("{id}/schedule")]
+    [Authorize(Roles = "Student,Admin")]
+    public async Task<ActionResult<ApiResponse<System.Collections.Generic.IReadOnlyList<EnrollmentResponseDto>>>> GetStudentSchedule(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var response = await _studentService.GetStudentScheduleAsync(id, pageNumber, pageSize);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
+
+    [HttpGet("{id}/transcript")]
+    [Authorize(Roles = "Student,Admin")]
+    public async Task<ActionResult<ApiResponse<TranscriptDto>>> GetStudentTranscript(int id, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        var response = await _studentService.GetStudentTranscriptAsync(id, pageNumber, pageSize);
+        if (!response.Success) return BadRequest(response);
+        return Ok(response);
+    }
+
+    [HttpGet("{id}/progress")]
+    [Authorize(Roles = "Student,Admin")]
+    public async Task<ActionResult<ApiResponse<StudentProfileDto>>> GetStudentProgress(int id)
+    {
+        var response = await _studentService.GetStudentProgressAsync(id);
+        if (!response.Success) return NotFound(response);
+        return Ok(response);
     }
 }

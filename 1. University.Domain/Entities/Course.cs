@@ -10,6 +10,8 @@ public class Course
     public string Description { get; set; }
     public int Credits { get; set; }
 
+    public bool IsDeleted { get; set; } = false;
+
     public int DepartmentId { get; set; } //FK 
     public Department Department { get; set; } //NAV PROP
 

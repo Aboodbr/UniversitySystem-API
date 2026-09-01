@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V5s31ric3Z836gP0AF5deVKO/jBvFcWy+C4JGAu5+NeEgGugvbMKRRK2h2LYAWttNPpYcR5jhTJrQZsXtxlMxQ==",
+  "dgSpecHash": "QZXBRsoDhH8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\DELL\\source\\repos\\Aboodbr\\UniversitySystem-API\\1. University.Domain\\University.Domain.csproj",
+  "projectFilePath": "/app/1. University.Domain/University.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
