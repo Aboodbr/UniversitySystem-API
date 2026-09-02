@@ -60,7 +60,7 @@ public class ProfessorsController : BaseApiController
     }
 
     [HttpGet("offerings/{offeringId}/students")]
-    [Authorize(Roles = "Professor")]
+    [Authorize(Roles = "Professor,Admin")]
     public async Task<ActionResult<ApiResponse<System.Collections.Generic.IReadOnlyList<University.Application.DTOs.Students.StudentResponseDto>>>> GetOfferingStudents(int offeringId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var response = await _professorService.GetOfferingStudentsAsync(offeringId, pageNumber, pageSize);

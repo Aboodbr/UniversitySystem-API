@@ -64,13 +64,14 @@ public class CourseService : ICourseService
     {
         var offeringEntity = _mapper.Map<CourseOffering>(createOfferingDto);
 
-        
+        await _unitOfWork.CourseOfferings.AddAsync(offeringEntity);
 
         var result = await _unitOfWork.CompleteAsync();
         if (result <= 0)
             return new ApiResponse<CourseOfferingDto>("Failed to create the course offering.");
+        var dataaftersave = await _unitOfWork.Courses.GetByIdAsync(createOfferingDto.CourseId);
 
-        var data = _mapper.Map<CourseOfferingDto>(offeringEntity);
+        var data = _mapper.Map<CourseOfferingDto>(dataaftersave);
         return new ApiResponse<CourseOfferingDto>(data, "Course offering created successfully.");
     }
 

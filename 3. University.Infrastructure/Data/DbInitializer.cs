@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using University.Infrastructure.Identity;
@@ -60,14 +60,31 @@ public static class DbInitializer
         if (!context.Departments.Any())
         {
             var departments = new List<Department>
-    {
-        new Department { Name = "Computer Science", Code = "CS" },
-        new Department { Name = "Information Systems", Code = "IS" },
-        new Department { Name = "Software Engineering", Code = "SE" },
-        new Department { Name = "Artificial Intelligence", Code = "AI" }
-    };
+            {
+                new Department { Name = "Computer Science", Code = "CS" },
+                new Department { Name = "Information Systems", Code = "IS" },
+                new Department { Name = "Software Engineering", Code = "SE" },
+                new Department { Name = "Artificial Intelligence", Code = "AI" }
+            };
 
             await context.Departments.AddRangeAsync(departments);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================================
+        // 5. Seed Rooms
+        // ==========================================
+        if (!context.Rooms.Any())
+        {
+            var rooms = new List<Room>
+            {
+                new Room { BuildingName = "A", RoomNumber = "A4", Capacity = 30 },
+                new Room { BuildingName = "B", RoomNumber = "B2", Capacity = 40 },
+                new Room { BuildingName = "C", RoomNumber = "C1", Capacity = 50 },
+                new Room { BuildingName = "D", RoomNumber = "D3", Capacity = 100 }
+            };
+
+            await context.Rooms.AddRangeAsync(rooms);
             await context.SaveChangesAsync();
         }
     }

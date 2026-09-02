@@ -11,7 +11,9 @@ using Microsoft.IdentityModel.Tokens;
 using University.Application.DTOs;
 using University.Application.DTOs.Auth;
 using University.Application.Interfaces;
-using University.Infrastructure.Identity; 
+using University.Infrastructure.Identity;
+using University.Domain.Entities;
+using University.Domain.Enums; // Required for Professor and Student entities
 
 namespace University.Infrastructure.Identity;
 
@@ -19,12 +21,17 @@ public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly IUnitOfWork _unitOfWork; // Injected for Domain database operations
 
-    // Inject UserManager provided by ASP.NET Core Identity
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+    // Inject UserManager, IConfiguration, and IUnitOfWork
+    public AuthService(
+        UserManager<ApplicationUser> userManager,
+        IConfiguration configuration,
+        IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _configuration = configuration;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ApiResponse<AuthResponseDto>> LoginAsync(LoginRequestDto request)
@@ -45,8 +52,8 @@ public class AuthService : IAuthService
 
         // 4. Generate token
         string token = GenerateJwtToken(user.Id, user.Email, role);
-        var response = new AuthResponseDto 
-        { 
+        var response = new AuthResponseDto
+        {
             Token = token,
             Email = user.Email,
             UserId = user.Id
@@ -55,18 +62,15 @@ public class AuthService : IAuthService
         return new ApiResponse<AuthResponseDto>(response, "Login successful.");
     }
 
-    public async Task<ApiResponse<AuthResponseDto>> RegisterAsync(
-     RegisterRequestDto request)
+    public async Task<ApiResponse<AuthResponseDto>> RegisterAsync(RegisterRequestDto request)
     {
         // 1. Check if email already exists
         var existingUser = await _userManager.FindByEmailAsync(request.Email);
 
         if (existingUser != null)
-            return new ApiResponse<AuthResponseDto>(
-                "Email is already registered."
-            );
+            return new ApiResponse<AuthResponseDto>("Email is already registered.");
 
-        // 2. Create user
+        // 2. Map request to Identity ApplicationUser
         var newUser = new ApplicationUser
         {
             UserName = request.Email,
@@ -75,63 +79,82 @@ public class AuthService : IAuthService
             LastName = request.LastName
         };
 
-        // 3. Create user with hashed password
-        var result = await _userManager.CreateAsync(
-            newUser,
-            request.Password
-        );
+        // 3. Create Identity user with hashed password
+        var result = await _userManager.CreateAsync(newUser, request.Password);
 
         if (!result.Succeeded)
         {
-            var errors = result.Errors
-                .Select(e => e.Description)
-                .ToList();
-
-            var response = new ApiResponse<AuthResponseDto>(
-                "User registration failed."
-            );
-
+            var errors = result.Errors.Select(e => e.Description).ToList();
+            var response = new ApiResponse<AuthResponseDto>("User registration failed.");
             response.Errors.AddRange(errors);
-
             return response;
         }
 
-        // 4. Assign role
+        // 4. Assign role to the newly created user
         if (!string.IsNullOrWhiteSpace(request.Role))
         {
-            var roleExists = await _userManager
-                .GetRolesAsync(newUser);
-
-            var roleResult = await _userManager.AddToRoleAsync(
-                newUser,
-                request.Role
-            );
+            var roleResult = await _userManager.AddToRoleAsync(newUser, request.Role);
 
             if (!roleResult.Succeeded)
             {
-                var errors = roleResult.Errors
-                    .Select(e => e.Description)
-                    .ToList();
+                var errors = roleResult.Errors.Select(e => e.Description).ToList();
 
-                // Remove user if role assignment fails
+                // Rollback: Remove user if role assignment fails
                 await _userManager.DeleteAsync(newUser);
 
-                var response = new ApiResponse<AuthResponseDto>(
-                    "Failed to assign user role."
-                );
-
+                var response = new ApiResponse<AuthResponseDto>("Failed to assign user role.");
                 response.Errors.AddRange(errors);
-
                 return response;
             }
         }
 
-        // 5. Generate JWT
-        var token = GenerateJwtToken(
-            newUser.Id,
-            newUser.Email!,
-            request.Role ?? "Student"
-        );
+        // 5. Link Identity User to Domain Entities (Professor or Student)
+        // This ensures the Domain database stays synchronized with the Identity system
+        try
+        {
+            if (request.Role.Equals("Professor", StringComparison.OrdinalIgnoreCase))
+            {
+                var professor = new Professor
+                {
+                    UserId = newUser.Id, // Link to AspNetUsers
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Title = "Dr.", // Default title
+                    DepartmentId = request.DepartmentId // Requires DepartmentId in RegisterRequestDto
+                };
+
+                await _unitOfWork.Professors.AddAsync(professor);
+                
+            }
+            else if (request.Role.Equals("Student", StringComparison.OrdinalIgnoreCase))
+            {
+                var student = new Student
+                {
+                    UserId = newUser.Id, // Link to AspNetUsers
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    DateOfBirth = request.DateOfBirth,
+                    GPA = 0.0,
+                    CompletedHours = 0,
+                    AcademicStatus = AcademicStatus.Active,
+                    DepartmentId = request.DepartmentId // Requires DepartmentId in RegisterRequestDto
+                };
+
+                await _unitOfWork.Students.AddAsync(student);
+            }
+
+            // Persist domain entities to the database
+            await _unitOfWork.CompleteAsync();
+        }
+        catch (Exception ex)
+        {
+            // Rollback: If saving to the domain tables fails (e.g., invalid DepartmentId), delete the Identity user
+            await _userManager.DeleteAsync(newUser);
+            return new ApiResponse<AuthResponseDto>($"Registration failed due to profile creation error: {ex.Message}");
+        }
+
+        // 6. Generate JWT Token
+        var token = GenerateJwtToken(newUser.Id, newUser.Email!, request.Role ?? "Student");
 
         var authResponse = new AuthResponseDto
         {
@@ -140,10 +163,7 @@ public class AuthService : IAuthService
             UserId = newUser.Id
         };
 
-        return new ApiResponse<AuthResponseDto>(
-            authResponse,
-            "Registration successful."
-        );
+        return new ApiResponse<AuthResponseDto>(authResponse, "Registration successful.");
     }
 
     /// <summary>
